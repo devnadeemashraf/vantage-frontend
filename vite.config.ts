@@ -24,4 +24,22 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router'],
+          'redux-vendor': ['@reduxjs/toolkit', 'react-redux'],
+          'ui-vendor': [
+            'class-variance-authority',
+            'clsx',
+            'tailwind-merge',
+            'lucide-react',
+          ],
+        },
+      },
+    },
+    sourcemap: false,
+    target: 'es2022',
+  },
 });

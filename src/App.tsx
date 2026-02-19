@@ -1,9 +1,16 @@
-function App() {
+import { Providers } from '@app/providers';
+import { AppRouter } from '@app/router';
+import { ErrorBoundary } from '@shared/ui';
+
+import { Toaster } from '@/components/ui/sonner';
+
+export default function App() {
   return (
-    <div className="flex min-h-svh items-center justify-center">
-      <h1 className="text-4xl font-bold">Vantage</h1>
-    </div>
+    <ErrorBoundary>
+      <Providers>
+        <AppRouter />
+        <Toaster richColors position="top-right" />
+      </Providers>
+    </ErrorBoundary>
   );
 }
-
-export default App;
