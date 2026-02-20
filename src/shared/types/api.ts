@@ -16,10 +16,18 @@ export interface Pagination {
   totalPages: number;
 }
 
+export interface SearchResultMeta {
+  /** Wall-clock time from request arrival to response sent (ms). */
+  totalTimeMs?: number;
+  /** Time spent executing database queries (ms). */
+  queryTimeMs?: number;
+}
+
 export interface PaginatedResponse<T> {
   status: 'success';
   data: T[];
   pagination: Pagination;
+  meta?: SearchResultMeta;
 }
 
 export interface ApiResponse<T> {
@@ -39,4 +47,5 @@ export interface SearchParams {
   page?: number;
   limit?: number;
   mode?: 'standard' | 'ai';
+  technique?: 'native' | 'optimized';
 }

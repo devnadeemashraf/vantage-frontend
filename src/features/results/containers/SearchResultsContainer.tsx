@@ -37,20 +37,24 @@ export function SearchResultsContainer() {
   const state = searchParams.get('state') ?? undefined;
   const entityType = searchParams.get('entityType') ?? undefined;
   const abnStatus = searchParams.get('abnStatus') ?? undefined;
+  const techniqueFromUrl = searchParams.get('technique') ?? undefined;
 
   const [localQuery, setLocalQuery] = useState(q ?? '');
 
-  usePageTitle(q ? `Results for "${q}"` : 'All Businesses');
-
-  const { data, isLoading, isError, refetch } = useSearchBusinessesQuery({
+  const queryArg = {
     q,
     state,
     entityType,
     abnStatus,
     page,
     limit,
-    mode: 'standard',
-  });
+    mode: 'standard' as const,
+    technique: (techniqueFromUrl as 'native' | 'optimized') || undefined,
+  };
+
+  usePageTitle(q ? `Results for "${q}"` : 'All Businesses');
+
+  const { data, isLoading, isError, refetch } = useSearchBusinessesQuery(queryArg);
 
   const handleRefine = () => {
     const params = new URLSearchParams(searchParams);
@@ -86,10 +90,16 @@ export function SearchResultsContainer() {
 
   const businesses = data?.data ?? [];
   const pagination = data?.pagination;
+  const metrics = data?.meta;
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <ResultsHeader query={q} total={pagination?.total ?? 0} />
+      <ResultsHeader
+        query={q}
+        total={pagination?.total ?? 0}
+        totalTimeMs={metrics?.totalTimeMs as number}
+        queryTimeMs={metrics?.queryTimeMs as number}
+      />
       <CompactSearchBar
         query={localQuery}
         onQueryChange={setLocalQuery}

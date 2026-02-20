@@ -28,6 +28,7 @@ export function StandardSearchContainer() {
   const handleSubmit = () => {
     const params = new URLSearchParams();
     if (query.trim()) params.set('q', query.trim());
+    if (filters.technique) params.set('technique', filters.technique);
     if (filters.state) params.set('state', filters.state);
     if (filters.entityType) params.set('entityType', filters.entityType);
     if (filters.abnStatus) params.set('abnStatus', filters.abnStatus);

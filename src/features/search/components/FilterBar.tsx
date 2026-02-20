@@ -11,6 +11,7 @@
 import {
   ABN_STATUS_OPTIONS,
   ENTITY_TYPE_OPTIONS,
+  FILTERING_TECHNIQUES,
   STATE_OPTIONS,
 } from '@shared/lib/constants';
 
@@ -30,19 +31,25 @@ export function FilterBar({ filters, onFilterChange }: FilterBarProps) {
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">
       <FilterDropdown
-        label="State"
+        label={FILTERING_TECHNIQUES[0].label}
+        value={filters.technique || '__all__'}
+        options={FILTERING_TECHNIQUES}
+        onChange={handleChange('technique')}
+      />
+      <FilterDropdown
+        label={STATE_OPTIONS[0].label}
         value={filters.state || '__all__'}
         options={STATE_OPTIONS}
         onChange={handleChange('state')}
       />
       <FilterDropdown
-        label="Entity Type"
+        label={ENTITY_TYPE_OPTIONS[0].label}
         value={filters.entityType || '__all__'}
         options={ENTITY_TYPE_OPTIONS}
         onChange={handleChange('entityType')}
       />
       <FilterDropdown
-        label="ABN Status"
+        label={ABN_STATUS_OPTIONS[0].label}
         value={filters.abnStatus || '__all__'}
         options={ABN_STATUS_OPTIONS}
         onChange={handleChange('abnStatus')}

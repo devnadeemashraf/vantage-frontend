@@ -46,3 +46,8 @@ export const ENTITY_TYPE_OPTIONS = [
   { value: 'UIE', label: 'Other Unincorporated Entity' },
   { value: 'COP', label: 'Co-operative' },
 ] as const;
+
+export const FILTERING_TECHNIQUES = [
+  { value: 'native', label: 'Native' },
+  { value: 'optimized', label: 'Optimized' },
+] as const;

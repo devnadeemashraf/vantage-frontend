@@ -15,11 +15,15 @@ import { Badge } from '@/components/ui/badge';
 interface ResultsHeaderProps {
   query: string | undefined;
   total: number;
+  totalTimeMs: number;
+  queryTimeMs: number;
 }
 
 export const ResultsHeader = memo(function ResultsHeader({
   query,
   total,
+  totalTimeMs,
+  queryTimeMs,
 }: ResultsHeaderProps) {
   return (
     <div className="mb-6 flex items-baseline gap-3">
@@ -34,6 +38,16 @@ export const ResultsHeader = memo(function ResultsHeader({
         )}
       </h1>
       <Badge variant="secondary">{total.toLocaleString()} results</Badge>
+      {totalTimeMs && (
+        <Badge variant="secondary">
+          Total Time: {totalTimeMs.toLocaleString()}ms
+        </Badge>
+      )}
+      {queryTimeMs && (
+        <Badge variant="secondary">
+          Query Time: {queryTimeMs.toLocaleString()}ms
+        </Badge>
+      )}
     </div>
   );
 });

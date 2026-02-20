@@ -28,6 +28,8 @@ export function useSearchQueryParams() {
     page: Number(searchParams.get('page')) || 1,
     limit: Number(searchParams.get('limit')) || DEFAULT_PAGE_SIZE,
     mode: (searchParams.get('mode') as 'standard' | 'ai') ?? 'standard',
+    technique:
+      (searchParams.get('technique') as 'native' | 'optimized') ?? 'native',
   };
 
   const setParams = (next: Partial<SearchParams>) => {
@@ -43,6 +45,8 @@ export function useSearchQueryParams() {
     if (merged.limit && merged.limit !== DEFAULT_PAGE_SIZE)
       entries.limit = String(merged.limit);
     if (merged.mode && merged.mode !== 'standard') entries.mode = merged.mode;
+    if (merged.technique && merged.technique !== 'native')
+      entries.technique = merged.technique;
 
     setSearchParams(entries);
   };

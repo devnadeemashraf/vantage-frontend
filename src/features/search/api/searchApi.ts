@@ -25,6 +25,7 @@ export const searchApi = baseApi.injectEndpoints({
           page: params.page,
           limit: params.limit,
           mode: params.mode,
+          technique: params.technique,
         },
       }),
       providesTags: ['Search'],
