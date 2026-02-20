@@ -3,6 +3,8 @@ export { DataTable } from './DataTable';
 export { EmptyState } from './EmptyState';
 export { ErrorAlert } from './ErrorAlert';
 export { ErrorBoundary } from './ErrorBoundary';
+export { IconFilterButton } from './IconFilterButton';
 export { LoadingSkeleton } from './LoadingSkeleton';
 export { ModeToggle } from './ModeToggle';
 export { Pagination } from './Pagination';
+export { TableShimmer } from './TableShimmer';

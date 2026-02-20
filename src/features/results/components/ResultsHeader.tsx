@@ -29,10 +29,10 @@ export const ResultsHeader = memo(function ResultsHeader({
     <div className="mb-6 flex items-baseline gap-3">
       <h1 className="text-2xl font-semibold">
         {query ? (
-          <>
+          <span className="text-muted-foreground font-normal">
             Search Results for &ldquo;
-            <span className="text-primary">{query}</span>&rdquo;
-          </>
+            <span className="text-primary font-bold">{query}</span>&rdquo;
+          </span>
         ) : (
           'All Businesses'
         )}

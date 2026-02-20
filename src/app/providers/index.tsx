@@ -10,7 +10,9 @@
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router';
 
-import { store } from './store';
+import { store } from '@/app/store';
+
+import { ThemeProvider } from './themeProvider';
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -19,7 +21,9 @@ interface ProvidersProps {
 export function Providers({ children }: ProvidersProps) {
   return (
     <ReduxProvider store={store}>
-      <BrowserRouter>{children}</BrowserRouter>
+      <ThemeProvider defaultTheme="dark" storageKey="vantage-ui">
+        <BrowserRouter>{children}</BrowserRouter>
+      </ThemeProvider>
     </ReduxProvider>
   );
 }

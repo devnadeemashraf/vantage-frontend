@@ -17,12 +17,14 @@ interface PaginationProps {
   page: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  disabled?: boolean;
 }
 
 export const Pagination = memo(function Pagination({
   page,
   totalPages,
   onPageChange,
+  disabled = false,
 }: PaginationProps) {
   if (totalPages <= 1) return null;
 
@@ -36,7 +38,7 @@ export const Pagination = memo(function Pagination({
       <Button
         variant="outline"
         size="icon"
-        disabled={page <= 1}
+        disabled={disabled || page <= 1}
         onClick={() => onPageChange(page - 1)}
         aria-label="Previous page"
       >
@@ -56,6 +58,7 @@ export const Pagination = memo(function Pagination({
             key={p}
             variant={p === page ? 'default' : 'outline'}
             size="icon"
+            disabled={disabled}
             onClick={() => onPageChange(p as number)}
             aria-label={`Page ${p}`}
             aria-current={p === page ? 'page' : undefined}
@@ -68,7 +71,7 @@ export const Pagination = memo(function Pagination({
       <Button
         variant="outline"
         size="icon"
-        disabled={page >= totalPages}
+        disabled={disabled || page >= totalPages}
         onClick={() => onPageChange(page + 1)}
         aria-label="Next page"
       >

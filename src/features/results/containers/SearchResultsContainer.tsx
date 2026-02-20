@@ -5,11 +5,11 @@
  *
  * Reads query params from URL, uses useSearchBusinessesQuery to fetch data,
  * and coordinates loading/error/empty states. Renders ResultsHeader,
- * CompactSearchBar, DataTable, and Pagination. Row clicks navigate to
- * /business/:abn. Refinement updates URL to trigger refetch.
+ * ResultsToolbar (with filters), DataTable, and Pagination. Shows shimmer
+ * UI during refetch and disables controls. Row clicks navigate to /business/:abn.
  */
 
-import { useSearchBusinessesQuery } from '@features/search';
+import { useSearchBusinessesQuery, useUrlFilters } from '@features/search';
 import { usePageTitle } from '@shared/hooks';
 import type { Business } from '@shared/types';
 import {
@@ -18,43 +18,41 @@ import {
   ErrorAlert,
   LoadingSkeleton,
   Pagination,
+  TableShimmer,
 } from '@shared/ui';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 
 import { businessColumns } from '../components/ColumnDefinitions';
-import { CompactSearchBar } from '../components/CompactSearchBar';
 import { ResultsHeader } from '../components/ResultsHeader';
+import { ResultsToolbar } from '../components/ResultsToolbar';
 import { usePagination } from '../hooks/usePagination';
 
 export function SearchResultsContainer() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { page, limit, setPage } = usePagination();
+  const { filters, setFilter } = useUrlFilters();
 
   const q = searchParams.get('q') ?? undefined;
-  const state = searchParams.get('state') ?? undefined;
-  const entityType = searchParams.get('entityType') ?? undefined;
-  const abnStatus = searchParams.get('abnStatus') ?? undefined;
-  const techniqueFromUrl = searchParams.get('technique') ?? undefined;
-
   const [localQuery, setLocalQuery] = useState(q ?? '');
 
   const queryArg = {
     q,
-    state,
-    entityType,
-    abnStatus,
+    state: filters.state || undefined,
+    entityType: filters.entityType || undefined,
+    abnStatus: filters.abnStatus || undefined,
     page,
     limit,
     mode: 'standard' as const,
-    technique: (techniqueFromUrl as 'native' | 'optimized') || undefined,
+    technique: (filters.technique as 'native' | 'optimized') || undefined,
   };
 
   usePageTitle(q ? `Results for "${q}"` : 'All Businesses');
 
-  const { data, isLoading, isError, refetch } = useSearchBusinessesQuery(queryArg);
+  const { data, isLoading, isFetching, isError, refetch } =
+    useSearchBusinessesQuery(queryArg);
 
   const handleRefine = () => {
     const params = new URLSearchParams(searchParams);
@@ -92,6 +90,8 @@ export function SearchResultsContainer() {
   const pagination = data?.pagination;
   const metrics = data?.meta;
 
+  const isRefetching = isFetching && !isLoading;
+
   return (
     <div className="container mx-auto px-4 py-8">
       <ResultsHeader
@@ -100,13 +100,18 @@ export function SearchResultsContainer() {
         totalTimeMs={metrics?.totalTimeMs as number}
         queryTimeMs={metrics?.queryTimeMs as number}
       />
-      <CompactSearchBar
+      <ResultsToolbar
         query={localQuery}
+        filters={filters}
         onQueryChange={setLocalQuery}
+        onFilterChange={setFilter}
         onSubmit={handleRefine}
+        disabled={isFetching}
       />
 
-      {businesses.length === 0 ? (
+      {isRefetching ? (
+        <TableShimmer rows={8} columns={5} />
+      ) : businesses.length === 0 ? (
         <EmptyState />
       ) : (
         <>
@@ -122,6 +127,7 @@ export function SearchResultsContainer() {
                 page={pagination.page}
                 totalPages={pagination.totalPages}
                 onPageChange={setPage}
+                disabled={isFetching}
               />
             </div>
           )}
