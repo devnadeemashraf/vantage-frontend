@@ -16,14 +16,6 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './src/components'),
     },
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://vantage-backend-5hmh.onrender.com',
-        changeOrigin: true,
-      },
-    },
-  },
   build: {
     rollupOptions: {
       output: {

@@ -7,7 +7,10 @@
  * all reference this file, keeping values in sync with the API.
  */
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api/v1';
+const API_HOST = import.meta.env.VITE_API_HOST ?? '';
+const API_PATH = import.meta.env.VITE_API_BASE_URL ?? '/api/v1';
+
+export const API_BASE_URL = `${API_HOST}${API_PATH}`;
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const MAX_PAGE_SIZE = 100;
